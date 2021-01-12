@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>password manager || login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <section>
+        <div class="sasa">
+            <div class="jumbotron">
+                <h1>Login</h1>
+                <form action="/" method="post">
+                    <div class="inputbx">
+                        <P>Email:</P>
+                        <input type="text" placeholder="email" name="email" required>
+                    </div>
+                    <div class="inputbx">
+                        <p>Password:</p>
+                        <input type="password" placeholder="password" name="password" required>
+                    </div>
+                    <div class="inputbx">
+                        <button type="submit">Login</button>
+                        <a href="/signup" role="button">SignUp</a>
+                    </div>
+                    <a href="/forgot">forgot password</a>
+                    <h3><%= information %></h3>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript" src="vanilla-tilt.js"></script>
+    <script>
+        VanillaTilt.init(document.querySelectorAll(".jumbotron"), {
+            max: 25,
+            speed: 100
+        });
+    </script>
+</body>
+
+</html>

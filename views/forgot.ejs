@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>password manager || FORGOT Password</title>
+    <link rel="stylesheet" href="forgot.css">
+</head>
+
+<body>
+    <section>
+        <div class="sasa">
+            <div class="jumbotron">
+                <h1>Reset password</h1>
+                <form action="/forgot" method="post" onSubmit="return checkPassword(this)">
+                    <div class="inputbx">
+                        <p>Email:</p>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="inputbx">
+                        <p>new password</p>
+                        <input type="password" name="password1" autocomplete="new-password" required>
+                    </div>
+                    <div class="inputbx">
+                        <p>confirm password</p>
+                        <input type="password" name="password2" required>
+                    </div>
+                    <div class="inputbx">
+                        <button type="submit">change</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script>
+        function checkPassword(form) {
+            password1 = form.password1.value;
+            password2 = form.password2.value;
+            if (password1 == '')
+                alert("Please enter Password");
+            else if (password2 == '')
+                alert("Please enter confirm password");
+            else if (password1 != password2) {
+                alert("\nPassword did not match: Please try again...")
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</body>
+
+</html>

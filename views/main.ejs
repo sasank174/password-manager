@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/0e070a32e4.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="loader" id="xyz"></div>
+    <div class="log">
+        <a href="/logout">Logout</a>
+    </div>
+    <div id="foo">
+        <h1 id="dis"></h1>
+    </div>
+    <div class="new">
+        <h1>New Password</h1>
+        <form action="/new" method="post">
+            <div class="inputbx">
+                <p>URL:</p>
+                <input type="text" name="url" placeholder="website url" required>
+            </div>
+            <div class="inputbx">
+                <p>Username or Email:</p>
+                <input type="text" name="username" placeholder="Username or Email" required>
+            </div>
+            <div class="inputbx">
+                <p>Password:</p>
+                <input type="password" name="upassword" placeholder="password" autocomplete="new-password" required>
+            </div>
+            <button type="submit"><i class="fas fa-plus"></i></button>
+        </form>
+    </div>
+    <section>
+
+        <% userdetails.forEach(function(user){ %>
+
+        <div class="saved">
+            <h4>URL:</h4>
+            <p onclick="copy(this)"><i class="far fa-copy"></i> <%= user.website %></p>
+            <h4>Username or Email:</h4>
+            <p onclick="copy(this)"><i class="far fa-copy"></i> <%= user.username %></p>
+            <h4>Password:</h4>
+            <p onclick="copy(this)"><i class="far fa-copy"></i> <%= user.upassword %></p>
+            <a href="/delete?userid=<%= user._id %>"><i class="fas fa-trash"></i></a>
+        </div>
+
+        <% }) %>
+
+    </section>
+
+    <script>
+        function copy(that) {
+            var inp = document.createElement('input');
+            document.body.appendChild(inp)
+            inp.value = that.textContent
+            setTimeout(function () {
+                document.getElementById('foo').style.opacity = '1';
+                document.getElementById('foo').style.height = '100%';
+                document.getElementById('foo').style.width = '100%';
+                document.getElementById("dis").innerHTML = that.textContent + " copied to clipboard";
+            }, 000);
+            setTimeout(function () {
+                document.getElementById('foo').style.height = '0';
+                document.getElementById('foo').style.width = '0';
+                document.getElementById('foo').style.opacity = '0';
+                document.getElementById("dis").innerHTML = "";
+            }, 2000);
+            inp.select();
+            document.execCommand('copy', false);
+            inp.remove();
+        }
+
+        window.onload=  function() {
+            document.getElementById("xyz").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

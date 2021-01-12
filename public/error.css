@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(45deg, rgb(133, 255, 153) 10%, rgb(255, 222, 162) 90%);
+    width: 100vw;
+}
+
+.cl{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: rgb(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgb(0, 0, 0, 0.5);
+    border-top: 2px solid rgb(255, 255, 255, 0.5);
+    border-left: 2px solid rgb(255, 255, 255, 0.5);
+    animation: up 3s infinite linear;
+    text-align: justify;
+}
+
+.cl a{
+    line-height: 2em;
+    text-decoration: none;
+    margin-top: 30px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+    font-size: 1em;
+    letter-spacing: 1px;
+    width: 150px;
+    transition: all 2s;
+}
+
+.cl a:hover{
+    letter-spacing: 5px;
+    width: 100%;
+}
+
+@keyframes up{
+    0%,100%{
+        transform: translate(-50%,-60%);
+    }
+    50%{
+        transform: translate(-50%,-50%);
+    }
+}
