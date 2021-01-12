@@ -1,6 +1,9 @@
 {
   "name": "manager",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.19.0"
+  },
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -10,9 +13,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "engines": {
-    "node": "12.19.0"
-  },
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
