@@ -309,7 +309,7 @@ app.post("/signup", redirecthome, function (req, res) {
                         from: "'manamwhy@gmail.com'",
                         to: email,
                         subject: 'verification register mail',
-                        html: "<div style='background: yellow;padding: 10px;'><h1>welcome</h1><p>hai</p><a href='" + link + "'><span>click me to verify your account</span></a></div>"
+                        html: "<div style='background: yellow;padding: 10px;'><h1>welcome</h1><p>hai save ur passwords</p><a href='" + link + "'><span>click me to verify your account</span></a></div>"
                     };
 
                     transporter.sendMail(mailOptions, function (error, info) {
