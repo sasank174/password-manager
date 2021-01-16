@@ -3,11 +3,14 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const {
     response
 } = require("express");
+const {
+    google
+} = require('googleapis');
 
 const app = express();
 
@@ -17,6 +20,49 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+const CLIENT_ID = '444653265576-l985kkko8agot59rr8qr3ukqudjujn13.apps.googleusercontent.com'
+const CLIENT_SCERET = '_DSol-1yJ8uzenqPsrcoyzSc'
+const REDIRECT_URI = 'https://developers.google.com/oauthplayground'
+const REFRESH_TOKEN = '1//04ry1qL86WWP0CgYIARAAGAQSNwF-L9IrbK6nTxWeqczcYtiwBbpiiiyq7Z8mSTMv7RAXJ-x2lyQvzV5vErRnAW6JEWt0wVO_8zA'
+
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SCERET, REDIRECT_URI)
+oAuth2Client.setCredentials({
+    refresh_token: REFRESH_TOKEN
+})
+
+async function sendMail(tomail, tosubject, totext, tohtml) {
+    try {
+        const accessToken = await oAuth2Client.getAccessToken()
+
+        const transport = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                type: 'OAuth2',
+                user: "yashwanthmadhulla@gmail.com",
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SCERET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken: accessToken
+            }
+        })
+
+        const mailOptions = {
+            from: "yashwanthmadhulla@gmail.com",
+            to: tomail,
+            subject: tosubject,
+            text: totext,
+            html: tohtml
+        };
+
+        const result = await transport.sendMail(mailOptions)
+        return result
+
+
+    } catch (error) {
+        return error
+    }
+}
+
 // =============================================
 
 const saltRounds = 10;
@@ -25,11 +71,11 @@ const saltRounds = 10;
 
 app.use(session({
     name: "sid",
-    secret: 'what a wonder amazing',
+    secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 2592000000
+        maxAge: 1000 * 60 * 100
     }
 }));
 
@@ -86,16 +132,6 @@ const Manage = new mongoose.model("Manage", managerSchema);
 
 // =============================================
 
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'manamwhy@gmail.com',
-        pass: 'neekuenduku'
-    }
-});
-
-// =============================================
-
 var information = "";
 
 app.get("/", redirecthome, function (req, res) {
@@ -108,7 +144,7 @@ app.get("/signup", redirecthome, function (req, res) {
     res.render("signup");
 });
 
-app.get("/error",function(req,res){
+app.get("/error", function (req, res) {
     req.session.destroy(err => {
         if (err) {
             res.redirect("error");
@@ -121,8 +157,6 @@ app.get("/error",function(req,res){
 });
 
 app.get("/main", redirectlogin, function (req, res) {
-
-
     let email = req.session.userid;
     Manage.find({
         "id": email
@@ -305,34 +339,27 @@ app.post("/signup", redirecthome, function (req, res) {
 
                     let link = "https://password-savers.herokuapp.com/verify?email=" + email + "&password=" + password + "";
 
-                    var mailOptions = {
-                        from: "'manamwhy@gmail.com'",
-                        to: email,
-                        subject: 'verification register mail',
-                        html: "<div style='background: yellow;padding: 10px;'><h1>welcome</h1><p>hai save ur passwords</p><a href='" + link + "'><span>click me to verify your account</span></a></div>"
-                    };
+                    let tomail = email;
+                    let tosubject = 'verification register mail';
+                    let totext = 'verification register mail';
+                    let tohtml = "<div style='background: yellow;padding: 10px;'><h1>welcome</h1><p>hai save ur passwords</p><a href='" + link + "'><span>click me to verify your account</span></a></div>";
 
-                    transporter.sendMail(mailOptions, function (error, info) {
+
+                    const newUser = new User({
+                        email: email,
+                        password: password,
+                        tpassword: ""
+                    });
+
+                    newUser.save(function (error) {
                         if (error) {
                             res.redirect("error");
                         } else {
-                            console.log('Email sent: ' + info.response);
-                            const newUser = new User({
-                                email: email,
-                                password: password,
-                                tpassword: ""
-                            });
-
-                            newUser.save(function (error) {
-                                if (error) {
-                                    res.redirect("error");
-                                } else {
-                                    information = "registered sucessfully verify your email to continue";
-                                    res.redirect("/");
-                                }
-                            })
+                            sendMail(tomail, tosubject, totext, tohtml).then(result => console.log("email...", result)).catch((error) => console.log(error.message))
+                            information = "registered sucessfully verify your email to continue";
+                            res.redirect("/");
                         }
-                    });
+                    })
                 });
             }
         }
@@ -355,33 +382,25 @@ app.post("/forgot", function (req, res) {
 
                     let link = "https://password-savers.herokuapp.com/changepass?email=" + email + "&password=" + password + "";
 
-                    var mailOptions = {
-                        from: "'manamwhy@gmail.com'",
-                        to: email,
-                        subject: 'verification register mail',
-                        html: "<div style='background: yellow;padding: 10px;'><h1>welcome</h1><p>hai</p><a href='" + link + "'><span>click me to change your account password</span></a></div>"
-                    };
+                    let tomail = email;
+                    let tosubject = 'verification mail to change password';
+                    let totext = 'verification mail to change password';
+                    let tohtml = "<div style='background: yellow;padding: 10px;'><h1>welcome</h1><p>hai</p><a href='" + link + "'><span>click me to change your account password</span></a></div>";
 
-                    transporter.sendMail(mailOptions, function (error, info) {
+
+                    User.updateOne({
+                        email: email
+                    }, {
+                        tpassword: password
+                    }, function (error) {
                         if (error) {
                             res.redirect("error");
                         } else {
-                            console.log('Email sent: ' + info.response);
-
-                            User.updateOne({
-                                email: email
-                            }, {
-                                tpassword: password
-                            }, function (error) {
-                                if (error) {
-                                    res.redirect("error");
-                                } else {
-                                    information = "verify your mail to change password";
-                                    res.redirect("/");
-                                }
-                            })
+                            sendMail(tomail, tosubject, totext, tohtml).then(result => console.log("email...", result)).catch((error) => console.log(error.message))
+                            information = "verify your mail to change password";
+                            res.redirect("/");
                         }
-                    });
+                    })
                 });
             } else {
                 information = "user not yet registered";
