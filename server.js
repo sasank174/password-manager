@@ -174,7 +174,7 @@ app.get("/", redirecthome, function (e, r) {
         n ? r.redirect("error") : s ? s.isverified ? (information = "user already registered", r.redirect("/")) : (information = "already registered verify your email to continue", r.redirect("/")) : bcrypt.hash(e.body.password, 10, function (e, n) {
             let s = "https://password-savers.herokuapp.com/verify?email=" + o + "&password=" + (i = n),
                 t = o,
-                a = "<div style='background: rgb(180, 248, 90);padding: 10px;'><h1>welcome</h1><h2>thank you for using our website https://password-savers.herokuapp.com/</h2><a href='" + s + "'style='text-decoration: none;background: rgb(92, 134, 250);padding: 15px;color: white;font-size: 20px;'><span>click me to verify your account</span></a><p>if the link is not working copy and paste the url in your browser</p><p>'" + s + "'</p></div>";
+                a = "<div style='background: rgb(180, 248, 90);padding: 10px;'><h1>welcome </h1><h2>thank you for using our website https://password-savers.herokuapp.com/</h2><a href='" + s + "'style='text-decoration: none;background: rgb(92, 134, 250);padding: 15px;color: white;font-size: 20px;'><span>click me to verify your account</span></a><p>if the link is not working copy and paste the url in your browser</p><p>'" + s + "'</p></div>";
             new User({
                 email: o,
                 password: i,
