@@ -25,7 +25,7 @@ const saltRounds = 10;
 
 app.use(session({
     name: "sid",
-    secret: 'keyboard cat',
+    secret: 'what a wonder amazing',
     resave: false,
     saveUninitialized: false,
     cookie: {
