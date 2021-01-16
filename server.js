@@ -29,7 +29,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 1000 * 60 * 100
+        maxAge: 2592000000
     }
 }));
 
@@ -303,7 +303,7 @@ app.post("/signup", redirecthome, function (req, res) {
                 bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
                     password = hash;
 
-                    let link = "https://password-savers.herokuapp.com/verify?email=" + email + "&password=" + password + "";
+                    let link = "http://localhost:3000/verify?email=" + email + "&password=" + password + "";
 
                     var mailOptions = {
                         from: "'manamwhy@gmail.com'",
@@ -353,7 +353,7 @@ app.post("/forgot", function (req, res) {
                 bcrypt.hash(req.body.password1, saltRounds, function (err, hash) {
                     password = hash;
 
-                    let link = "https://password-savers.herokuapp.com/changepass?email=" + email + "&password=" + password + "";
+                    let link = "http://localhost:3000/changepass?email=" + email + "&password=" + password + "";
 
                     var mailOptions = {
                         from: "'manamwhy@gmail.com'",
